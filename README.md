@@ -66,12 +66,27 @@ Le reverse Proxy que nous allons mettre en place va permettre d'optimiser les pe
 * Créer un dossier par utilisateur dans le dossier `/var/www/`. Ces dossiers contiendront les sites des utilisateurs.
 
 
-### Etape 3 : Installation et configuration de Nginx
+### Etape 2 : Installation et configuration de Nginx
 
 * Installer NGINX : `sudo apt-get install nginx`
 * Démarrer NGINX et l'activer : `systemctl start nginx` et `systemctl enable nginx`.
-* Installer ufw : `sudo apt-get install ufw`. Permet de configurer le pare-feu. On peut voir les différentes application qui sont autorisées à tourner par le pare-feu : `sudo ufw app list`. On va maintenant autorisé le trafic uniquement sur le port 80(pour l'instant) `sudo ufw allow 'Nginx HTTP'`.
-* On vérifie que le système est bien en place : `systemctl status nginx`.         
+* A l'ajout d'un site on va se rendre dans le dossier `/etc/nginx/sites-available` pour y créer le fichier `monsite.com.conf`.
+    * Au sein de ce fichier on va ajouter un block `server` qui doit contenir les infos suivantes : 
+    ``` 
+    server {
+    server_name alexboisseau.com www.alexboisseau.com;
+
+        location / {
+            proxy_pass http://127.0.0.1:8080;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+    }
+    ```
+    * Créer un lien symbolique dans le dossier `sites-enabled` avec la commande `sudo ln -s /etc/nginx/sites-available/monsite.com.conf /etc/nginx/sites-enabled`.
+    * Une fois fait, ajouter la certification SSL avec la commande `sudo certbot --nginx -d monsite.com -d www.monsite.com`.
  
 
 
