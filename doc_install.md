@@ -87,6 +87,26 @@ Le reverse Proxy que nous allons mettre en place va permettre d'optimiser les pe
     ```
     * Créer un lien symbolique dans le dossier `sites-enabled` avec la commande `sudo ln -s /etc/nginx/sites-available/monsite.com.conf /etc/nginx/sites-enabled`.
     * Une fois fait, ajouter la certification SSL avec la commande `sudo certbot --nginx -d monsite.com -d www.monsite.com`.
+
+### Etape 3 : Installation de MariaDB et de PHP pour pouvoir héberger des sites dynamiques
+
+* Pour pouvoir faire fonctionner des sites dynamiques on va avoir besoin d'installer php et mariaDB pour récuperer de la data à la volée et l'inserer dans des modèles HTML prédéfinies.
+
+#### Installation de PHP : 
+
+* Exécuter la commande : `sudo apt-get install php libapache2-mod-php`
+
+#### Installation de MariaDB : 
+
+* Exécuter la commande : `sudo apt install mariadb-server`
+* Création de 2 utilisateurs avec tous les droits (dans MariaDb): 
+```
+CREATE USER 'newuser'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON * . * TO 'newuser'@'localhost';
+FLUSH PRIVILEGES;
+exit; 
+```
+
  
 
 
