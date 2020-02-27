@@ -106,13 +106,14 @@ GRANT ALL PRIVILEGES ON * . * TO 'newuser'@'localhost';
 FLUSH PRIVILEGES;
 exit; 
 ```
+### Etape 4 : Mise en place de la back-up (Borg)
 
- 
-
-
-
-
-
-
-
-
+* Installation du paquet `sudo apt install borgbackup`
+* Installation de PIP pour Borgmatic `sudo apt install python3-pip python3-setuptools`
+* Installation de Wheel pour Borgmatic `sudo pip3 install wheel`
+* Installation de Borgamatic `pip3 install --user --upgrade borgmatic`
+* On génère la configuration de base qu'on va modifier avec `sudo env "PATH=$PATH" generate-borgmatic-config`
+* Création d'un repository sur BorgBase, associé à une paire de clef SSH qu'on a générer sur le VPS
+* Initilisation de la backup sur BorgBase `sudo env "PATH=$PATH" borgmatic init --encryption repokey-blake2`
+* Création d'une backup : `sudo env "PATH=$PATH" borgmatic --verbosity 1`
+* Initilisation d'une crontab
