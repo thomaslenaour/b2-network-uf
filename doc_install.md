@@ -1,5 +1,5 @@
-# Projet UF Réseau
-Ynov Informatique B2A - Repository du projet UF Réseaux - Thomas Le Naour / Alex Boisseau
+# Projet UF Infrastructure & Système d'Information
+Ynov Informatique B2A - Doc d'installation projet UF Infrastructure & Système d'informations - Thomas Le Naour / Alex Boisseau
 
 ## Mise en place et sécurisation du VPS
 
@@ -8,10 +8,10 @@ Ynov Informatique B2A - Repository du projet UF Réseaux - Thomas Le Naour / Ale
 * Redémarrer le service ssh `/etc/init.d/ssh restart`.  
 * Pour se connecter en ssh au VPS il faudra rajouter une option où on spécifie le port choisi (`ssh root@IPDUSERVEUR -p PORT`). 
 * Changer le mot de passe de l'utilisateur root (le seul pour le moment) -> `passwd root`. (Ne jamais se connecter avec l'utilisateur `root` après avoir créé son premier utilisateur.)
-* Créer le nouvel utilisateur `adduser NOUVELUTILISATEUR`. Rentrer les données qui sont demandées et choisir un mot de passe(mélanger les caractères etc...)
-* Empecher l'utilisateur `root` de se connecter au serveur via protocole ssh. Pour cela, on se rend dans le fichier `/etc/ssh/sshd_config`. A la ligne `PermitRootLogin` et mettre `no`.
+* Créer le nouvel utilisateur `adduser NOUVELUTILISATEUR`. Rentrer les données qui sont demandées et choisir un mot de passe (mélanger les caractères etc...).
+* Empêcher l'utilisateur `root` de se connecter au serveur via protocole ssh. Pour cela, on se rend dans le fichier `/etc/ssh/sshd_config`. A la ligne `PermitRootLogin` et mettre `no`.
 * Redémarrer le service ssh `/etc/init.d/ssh restart`. 
-* Installer le logiciel `Fail2Ban`. Ce logiciel permet de "stocker" les adresses IPs autorisées à acceder au serveur. Pour l'installer -> `apt-get install fail2ban`.
+* Installer le logiciel `Fail2Ban`. Ce logiciel permet de "stocker" les adresses IPs autorisées à acceder au serveur mais également de banir une IP pendant une certaine durée selon les paramètres attribués au fichier de configuration. Pour l'installer -> `apt-get install fail2ban`.
 * Configurer `fail2ban` : se rendre ans le fichier (normalement vide) `/etc/fail2ban/jail.d/defaults-debian.conf` puis y ajouter
 
 ```
@@ -28,7 +28,7 @@ bantime = 3600
 
 ## Mise en place du Reverse Proxy
 
-Le reverse Proxy que nous allons mettre en place va permettre d'optimiser les performances de notre serveur en placant un autre serveur "intermediaire" entre le client et notre serveur. Ce serveur intermediaire sera (configuré sous Nginx) et pourra stocker des fichiers statiques en cache ce qui permettra à notre serveur (configuré sous apache) d'économiser ses ressources. Le serveur intermediaire sera accessible à partir du port 80 sur notre adresse IP tandis que notre serveur sera uniquement accessible en local sur le port 8080. 
+Le reverse Proxy que nous allons mettre en place va permettre d'optimiser les performances de notre serveur en placant un autre serveur "intermédiaire" entre le client et notre serveur mais aussi d'augmenter sa sécurité en plaçant une "barrière" entre le client et le serveur. Ce serveur intermédiaire (configuré sous Nginx) pourra stocker des fichiers statiques en cache ce qui permettra à notre serveur (configuré sous apache) d'économiser ses ressources. Le serveur intermédiaire sera accessible à partir du port 80 sur notre adresse IP tandis que notre serveur sera uniquement accessible en local sur le port 8080. 
 
 
 ### Etape 1 : Installation et configuration de Apache
